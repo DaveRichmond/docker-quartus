@@ -1,0 +1,3 @@
+[submodule "deps/docker-fpga"]
+	path = deps/docker-fpga
+	url = https://github.com/DaveRichmond/docker-fpga
