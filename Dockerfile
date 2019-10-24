@@ -12,11 +12,13 @@ ARG INSTALL_ARGS="--mode unattended \
         --accept_eula 1 \
         --unattendedmodeui minimal"
 
+ARG WGET="curl -O -# "
+
 RUN apt update && \
-	apt install -y wget
+	apt install -y wget curl
 
 RUN cd /tmp && \
-	wget -q ${MIRROR}${QUARTUS_INSTALLER} && \
+	${WGET} ${MIRROR}${QUARTUS_INSTALLER} && \
 	tar xvf Quartus*.tar && \
 	rm *.tar && \
 	cd components && \
@@ -27,12 +29,14 @@ RUN cd /tmp && \
 	
 RUN cd /tmp && \
 	[ "${QUARTUS_UPDATER}" = "" ] || ( \
-		wget -q ${MIRROR}${QUARTUS_UPDATER} && \
+		${WGET} ${MIRROR}${QUARTUS_UPDATER} && \
 		chmod +x *.run && \
 		echo "Installing ${QUARTUS_UPDATER} to ${INSTALL_DIR}" && \
 		echo ./QuartusSetup*.run ${INSTALL_ARGS} && \
 		./QuartusSetup*.run ${INSTALL_ARGS} \
 	)
+
+RUN rm -Rf ${INSTALL_DIR}/uninstall
 	
 FROM daverichmond/fpga:latest
 MAINTAINER David Richmond <dave@prstat.org>
@@ -44,7 +48,7 @@ COPY --from=build /opt /opt
 # install libraries required
 RUN apt update && \
 	apt install -y libfreetype6 libsm6 libglib2.0-0 libxrender1 \
-		libfontconfig1 libxext6 locales xterm wget && \
+		libfontconfig1 libxext6 locales xterm wget curl && \
 	echo "en_AU.UTF-8 UTF-8" >> /etc/locale.gen && \
 	echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
 	locale-gen && \
@@ -56,7 +60,7 @@ WORKDIR /tmp
 # ubuntu makes it a bit of a pain to grab old stuff (in a scripted way).
 # grabbed a link from:
 #  https://packages.ubuntu.com/xenial-updates/amd64/libpng12-0/download
-RUN wget http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb  && \
+RUN wget -q http://security.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb && \
         dpkg -i libpng12*.deb && \
         rm *.deb
 
