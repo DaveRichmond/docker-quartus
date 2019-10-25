@@ -4,7 +4,7 @@ FROM ubuntu:18.04 AS build
 ARG QUARTUS_MAJOR_VERSION
 ARG MIRROR=http://download.altera.com/akdlm/software/acdsinst/
 ARG QUARTUS_INSTALLER="18.1std/625/ib_tar/Quartus-lite-18.1.0.625-linux.tar"
-#ARG QUARTUS_UPDATER="18.1std.1/646/update/QuartusSetup-18.1.1.646-linux.run"
+ARG QUARTUS_UPDATER="18.1std.1/646/update/QuartusSetup-18.1.1.646-linux.run"
 
 ARG INSTALL_DIR="/opt/quartus/${QUARTUS_MAJOR_VERSION}"
 ARG INSTALL_ARGS="--mode unattended \
