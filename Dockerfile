@@ -73,4 +73,4 @@ ENV PATH=${PATH}:/opt/quartus/${QUARTUS_MAJOR_VERSION}/quartus/bin
 ENV PATH=${PATH}:/opt/quartus/${QUARTUS_MAJOR_VERSION}/nios2eds/bin
 ENV QUARTUS_ROOTDIR=/opt/quartus/${QUARTUS_MAJOR_VERSION}/quartus
 
-CMD ["/bin/bash", "-c"]
+CMD ["/bin/bash"]
